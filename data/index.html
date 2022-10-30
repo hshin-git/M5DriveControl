@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta name='viewport' content='width=device-width,initial-scale=1' charset="UTF-8" />
+<title>M5 Drive Controller</title>
+<style type="text/css">
+h1,h2,h3 {
+  padding: 0.5rem 1rem;
+  color: #fff;
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear, left top, right top, from(#f83600), to(#f9d423));
+  background-image: -webkit-linear-gradient(left, #f83600 0%, #f9d423 100%);
+  background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+  font-size: 100%;
+}
+select {
+  font-weight:bold;
+}
+table{
+  width: 100%;
+  border-spacing: 0;
+}
+table th{
+  border-bottom: solid 2px #fb5144;
+  padding: 2px 0;
+}
+table td{
+  border-bottom: solid 2px #ddd;
+  text-align: center;
+  padding: 2px 0;
+}
+th.left { text-align: left; }
+th.right { text-align: right; }
+td.left { text-align: left; }
+td.right { text-align: right; }
+input[type=radio] {
+}
+input[type=button] {
+  background-color: gray;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 4px 16px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-size: 100%;
+  font-weight: bold;
+}
+input[type=button]:hover {
+  background: black;
+}
+input[type=range] {
+}
+</style>
+<!-- <link href="/simple.min.css" rel="stylesheet"> -->
+<script src="/vue.min.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+
+<h2>table 
+<select v-model="currentGroup" @change="currentIndex=0;">
+  <option v-for="(param,group) in paramDict" :value="group" :key="group"> {{group}} 
+</select>
+</h2>
+
+<table>
+  <thead><tr><th v-for="(header,index) in paramHead" :key="index"> {{header}} </th></tr></thead>
+<tbody>
+<template v-for="(param,index) in paramDict[currentGroup]" :key="index">
+<tr>
+ <th class="left"><label><input type="radio" v-model="currentIndex" :value="index"> {{param.name}} </label></th>
+ <td class="right">{{param.value}}</td>
+ <td>({{param.unit}})</td>
+ <td>
+  <template v-if="param.type=='ajax'">
+   <input type="range" v-model="param.value" :min="param.min" :max="param.max" :step="param.step" disabled="true"/>
+  </template>
+  <template v-else-if="param.type=='text'">
+   <input type="text"  v-model="param.value" :minlength="param.minlength" :maxlength="param.maxlength" :pattern="param.pattern" @input="paramModified(param.value)" :disabled="paramDisabled(index)"/>
+  </template>
+  <template v-else-if="param.type=='color'">
+   <input type="color" v-model="param.value" @input="paramModified(param.value)" :disabled="paramDisabled(index)"/>
+  </template>
+  <template v-else-if="param.type=='select'">
+   <select v-model="param.value" @change="paramModified(param.value)" :disabled="paramDisabled(index)"/>
+    <option v-for="(opt,key) in param.option" :value="opt" :key="key">{{opt +":"+ param.label[key]}}
+   </select>
+  </template>
+  <template v-else-if="param.type=='fetch'">
+   <input type="button" :value="param.group+'['+param.index+']'" @click="param.value=paramModified(paramDict[param.group][param.index].value)" :disabled="paramDisabled(index)"/>
+  </template>
+  <template v-else-if="param.type=='range'">
+   <input type="range" v-model="param.value" @input="paramModified(param.value)" :min="param.min" :max="param.max" :step="param.step" :disabled="paramDisabled(index)"/>
+  </template>
+  <template v-else>
+   <input type="number" v-model="param.value" @input="paramModified(param.value)" :min="param.min" :max="param.max" :disabled="paramDisabled(index)"/>
+  </template>
+ </td>
+</tr>
+</template>
+</tbody>
+</table>
+
+<h2>command</h2>
+<input type="button" value="reload" @click="location.href='/'">
+<input type="button" value="save" @click="saveParam()">
+<input type="button" value="exit" @click="location.href='/exit?'+queryString()">
+<input type="button" value="export" @click="exportJson()">
+<!-- <input type="file" name="import" accept=".json" @change="importJson"> -->
+
+<ul>
+<!--
+<li><div>currentGroup: {{currentGroup}}</div>
+<li><div>currentIndex: {{currentIndex}}</div>
+<li><div>queryString: {{queryString()}}</div>
+-->
+<li><div id='inputIsValid'>{{inputIsValid()}}</div>
+<li><div id='lastTimeAjax'>ajax {{Math.trunc((currentTime - lastTimeAjax)/1000)}} seconds ago.</div>
+<li><div id='lastTimeSave'>save {{Math.trunc((currentTime - lastTimeSave)/1000)}} seconds ago.</div>
+<li><div>update: {{paramUpdate}}</div>
+</ul>
+
+</div>
+
+<script>
+const COLOR_OK = 'black';
+const COLOR_NG = 'red';
+const ajaxMsec= 1000;
+
+function YYYYMMDDHHmm() {
+  const now = new Date();
+  return now.toISOString().replace(/[^0-9]/g, '').slice(0, -5);  
+}
+
+var app = new Vue({
+ el: '#app',
+ data: function() {
+  return {
+   paramHead: ['name','value','unit','input'],
+   paramDict: {'ajax':[]},
+   paramUpdate: {},
+   currentGroup: 'ajax',
+   currentIndex: 0,
+   currentTime: new Date(),
+   lastTimeAjax: new Date(),
+   lastTimeSave: new Date(),
+  }
+ },
+ created() {
+  //fetch('/paramDict.json')
+  fetch('/json')
+   .then((resp) => { return resp.json(); })
+   .then((json) => { this.paramDict = json; /*JSON.parse(json);*/  })
+   .catch((err) => { console.log(err); });
+  setTimeout(this.ajaxFetch, ajaxMsec);
+  setInterval(this.watchDog, ajaxMsec);
+  },
+ computed: {
+  paramString: function() {
+   var qs = "";
+   for (let g in this.paramDict) if (g != "ajax") for (let k of this.paramDict[g]) qs += (k.name +"="+ k.value +"&");
+   return qs + "end="; 
+  },
+ },
+ methods: {
+  paramDisabled(index) { return this.currentGroup == "ajax" || this.currentIndex != index; },
+  paramModified(value) {
+   const ps = this.paramDict[this.currentGroup];
+   const p = ps[this.currentIndex];
+   if (this.paramValid(p,value)) this.paramUpdate[this.currentGroup +"."+ this.currentIndex] = value;
+   return value; 
+  },
+  queryString() {
+   var qs = "";
+   for (let k in this.paramUpdate) qs += (k +"="+ encodeURIComponent(this.paramUpdate[k]) +"&");
+   return qs + "end=";
+  },
+  saveParam() {
+   fetch('/save?' + this.queryString())
+    .then((resp) => { this.lastTimeSave = new Date(); this.paramUpdate = {}; })
+    .catch((err) => { console.log(err); }); 
+   },
+  ajaxFetch() {
+   fetch('/ajax')
+    .then((resp) => { return resp.json(); })
+    .then((json) => {
+     this.lastTimeAjax = new Date();
+     //for (let p of this.paramDict['ajax']) if (p.name in json) p.value = json[p.name];
+     this.paramDict['ajax'] = json['ajax']
+     setTimeout(this.ajaxFetch,ajaxMsec); })
+    .catch((err) => { console.log(err); });
+  },
+  exportJson() {
+   const blob = new Blob([JSON.stringify(this.paramDict)], { type:'application/json',});
+   const link = document.createElement('a');
+   link.href = URL.createObjectURL(blob);
+   link.download = 'm5dc-' + YYYYMMDDHHmm() + 'utc.json';
+   link.click();
+   link.remove();
+  },
+  importJson(e) {
+    const file = e.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = (evt) => { this.paramDict = JSON.parse(evt.target.result); };
+      reader.readAsText(file);
+      //console.log(file); console.log(this.paramDict);
+    }
+  },
+  watchDog() {
+    this.currentTime = new Date();
+    document.getElementById('lastTimeAjax').style.color = this.currentTime - this.lastTimeAjax < 1.5*ajaxMsec ? COLOR_OK: COLOR_NG;
+    document.getElementById('lastTimeSave').style.color = Object.keys(this.paramUpdate).length == 0 ? COLOR_OK: COLOR_NG;
+  },
+  paramValid(par,val) {
+    var valid = false;
+    if (par.type == 'range' || par.type == 'number' || par.type == 'ajax' || par.type == 'fetch') {
+      valid = val >= par.min && val <= par.max;
+    } else
+    if (par.type == 'text') {
+      valid = (val.length == 0) || (val.length >= par.minlength && val.length <= par.maxlength); //&& val.match(par.pattern);
+    } else
+    if (par.type == 'select') {
+      valid = par.option.includes(val);
+    } else
+    if (par.type == 'color') {
+      valid = val.match("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+    };
+    return valid;
+  },
+  inputIsValid() {
+    const ps = this.paramDict[this.currentGroup];
+    if (this.currentIndex >= ps.length) return "";
+    const p = ps[this.currentIndex];
+    const valid = this.paramValid(p,p.value);
+    document.getElementById('inputIsValid').style.color = valid ? COLOR_OK: COLOR_NG;
+    return this.currentGroup +"."+ p.name +" is "+ (valid? "valid.": "invalid.");
+  },
+ },
+});
+</script>
+
+</body>
+</html>
