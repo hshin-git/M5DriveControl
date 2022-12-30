@@ -36,7 +36,7 @@ Preferences ParameterListStorage;
 #define PTYPE_FREF 4
 #define PTYPE_TEXT 5
 //
-#define PLIST_MAGIC 12345678
+#define PLIST_MAGIC 123456789
 #define PCONF_END  {PTYPE_VOID,{.ival=PLIST_MAGIC},NULL}
 // integer: type=range
 #define PCONF_RANGE(key,val,unit,min,max,step) \

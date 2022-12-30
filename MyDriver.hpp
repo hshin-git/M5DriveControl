@@ -23,6 +23,7 @@ public:
 // G-Vectoring mode
 ////////////////////////////////////////////////////////////////////////////////
 ParameterList gvectConfig = {
+  .body = {0},
   .conf = {
     PCONF_RANGE("gain",50,"%%",0,100,1),
     PCONF_RANGE("hpf",1,"span",1,100,1),
@@ -30,7 +31,7 @@ ParameterList gvectConfig = {
     PCONF_END,
   },
 };
-#define GVECT_GAIN  (gvectConfig.getIval(0)/0.05)
+#define GVECT_GAIN  (gvectConfig.getIval(0)/0.5)
 #define GVECT_HPF (gvectConfig.getIval(1))
 #define GVECT_LPF (gvectConfig.getIval(2))
 
@@ -49,19 +50,16 @@ public:
   };
   void loop() {
     //
-    float Gy = ACCL[0];
-    float dotGy = HPF.update(Gy);
-    float Gxc = -GVECT_GAIN*LPF.update(dotGy);
-    if (Gy*dotGy < 0.0) Gxc = -Gxc;
-    Gxc = constrain(Gxc, -1.0,1.0);
+    float Gx = ACCL[0];
+    float dotGx = HPF.update(Gx);
+    float Gyc = -GVECT_GAIN*LPF.update(dotGx);
+    if (Gx*dotGx < 0.0) Gyc = -Gyc;
+    Gyc = constrain(Gyc, -1.0,1.0);
     // ch1
     OUT[0] = constrain(IN[0],MIN,MAX);
     // ch2
-    if (abs(IN[1] - CH2_MID) < CH2_DEAD) {
-      OUT[1] = CH2_MID;
-    } 
-    else if (IN[1] > CH2_MID) {
-      OUT[1] = CH2_MID + (IN[1] - CH2_MID)*(1.0 + Gxc);
+    if (IN[1] > CH2_MID + CH2_DEAD) {
+      OUT[1] = CH2_MID + (IN[1] - CH2_MID)*(1.0 + Gyc);
       OUT[1] = constrain(OUT[1], CH2_MIN,CH2_MAX);
     } else
       OUT[1] = IN[1];
@@ -74,6 +72,7 @@ public:
 // Drift mode
 ////////////////////////////////////////////////////////////////////////////////
 ParameterList driftConfig = {
+  .body = {0},
   .conf = {
     PCONF_RANGE("rate",50,"deg/sec",10,720,10),
     PCONF_NUMBER("P",50,"%%",0,100),
@@ -115,6 +114,7 @@ public:
 // Stunt mode
 ////////////////////////////////////////////////////////////////////////////////
 ParameterList stuntConfig = {
+  .body = {0},
   .conf = {
     PCONF_FETCH("roll",0,"deg","ajax",5,30,60),
     PCONF_NUMBER("G",50,"%%",0,100),
@@ -167,6 +167,7 @@ public:
 // Tank mode
 ////////////////////////////////////////////////////////////////////////////////
 ParameterList tankConfig = {
+  .body = {0},
   .conf = {
     PCONF_RANGE("rate",60,"deg/sec",10,720,10),
     PCONF_NUMBER("P",50,"%%",0,100),
@@ -196,18 +197,22 @@ public:
     RATE_PID.setup(TANK_P,TANK_I,TANK_D,MIN,CH1_MID,MAX,400);
   };
   void loop() {
-    float YAW_RATE = GYRO[2];
+    float YAW_RATE = IN[1] > CH2_MID? GYRO[2]: -GYRO[2];
     float OUT_RATE = RATE_PID.loop(IN[0], TANK_RATE*(TANK_REV? -YAW_RATE: YAW_RATE)) - CH1_MID;
-    OUT[0] = IN[1] + OUT_RATE;
-    OUT[1] = IN[1] - OUT_RATE;
     //
     if (abs(IN[1] - CH2_MID) < CH2_DEAD) {
       // Neutral
       OUT[0] = OUT[1] = CH2_MID;
-    } else {
-      // Forward/Reverse
-      OUT[0] = constrain(OUT[0],CH2_MIN,CH2_MAX);
-      OUT[1] = constrain(OUT[1],CH2_MIN,CH2_MAX);
+    } 
+    else if (IN[1] >= CH2_MID) {
+      // Forward
+      OUT[0] = constrain(IN[1] + OUT_RATE,CH2_MIN,CH2_MAX);
+      OUT[1] = constrain(IN[1] - OUT_RATE,CH2_MIN,CH2_MAX);
+    }
+    else if (IN[1] < CH2_MID) {
+      // Reverse
+      OUT[0] = constrain(IN[1] - OUT_RATE,CH2_MIN,CH2_MAX);
+      OUT[1] = constrain(IN[1] + OUT_RATE,CH2_MIN,CH2_MAX);
     }
   };
 } tankDriver;
@@ -218,6 +223,7 @@ public:
 // Drone mode
 ////////////////////////////////////////////////////////////////////////////////
 ParameterList droneConfig = {
+  .body = {0},
   .conf = {
     PCONF_RANGE("angle",30,"deg",10,60,5),
     PCONF_NUMBER("P1",50,"%%",0,100),
@@ -273,95 +279,6 @@ public:
     OUT[3] = constrain(OUT[3],MIN,MAX);
   };
 } droneDriver;
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-// System table
-////////////////////////////////////////////////////////////////////////////////
-// GPIO setup
-ParameterList portConfig = {
-  .conf = {
-    PCONF_SELECT("sbus_in",0,"port","[0,26,32,22,19,23,33]","[\"off\",\"g1\",\"g2\",\"b1\",\"b2\",\"b3\",\"b4\"]"),
-    PCONF_SELECT("ch1_in",26,"port","[26,32]","[\"g1\",\"g2\"]"),
-    PCONF_SELECT("ch2_in",32,"port","[26,32]","[\"g1\",\"g2\"]"),
-    PCONF_SELECT("esc1_out",0,"port","[0,22,23]","[\"off\",\"b1_b2\",\"b3_b4\"]"),
-    PCONF_SELECT("esc2_out",0,"port","[0,22,19,23,26]","[\"off\",\"b1_b2\",\"b2_b3\",\"b3_b4\",\"g1_g2\"]"),
-    PCONF_SELECT("ch1_out",22,"port","[22,19,23,33,26,32]","[\"b1\",\"b2\",\"b3\",\"b4\",\"g1\",\"g2\"]"),
-    PCONF_SELECT("ch2_out",19,"port","[22,19,23,33,26,32]","[\"b1\",\"b2\",\"b3\",\"b4\",\"g1\",\"g2\"]"),
-    PCONF_END,
-  },
-};
-//
-#define SBUS_IN (portConfig.getIval(0))
-#define CH1_IN  (portConfig.getIval(1))
-#define CH2_IN  (portConfig.getIval(2))
-#define ESC1_OUT  (portConfig.getIval(3))
-#define ESC2_OUT  (portConfig.getIval(4))
-#define CH1_OUT (portConfig.getIval(5))
-#define CH2_OUT (portConfig.getIval(6))
-//
-int ESC_BUDDY(const int p) {
-  switch(p) {
-    case 22: return 19;
-    case 19: return 23;
-    case 23: return 33;
-    case 26: return 32;
-    default: return -1;
-  }
-  return 0;
-}
-
-
-// global setup
-ParameterList globalConfig = {
-  .conf = {
-    PCONF_SELECT("run_mode",1,"mode","[1,2,3,4]","[\"gvect\",\"drift\",\"stunt\",\"tank\"]"),
-    PCONF_SELECT("imu_axis",1,"axis","[1,2,3,4,5,6]","[\"X+\",\"X-\",\"Y+\",\"Y-\",\"Z+\",\"Z-\"]"),
-    PCONF_NUMBER("imu_lpf",1,"span",1,100),
-    PCONF_TEXT("wifi_ssid",{0},"text",4,10),
-    PCONF_TEXT("wifi_pass",{0},"text",8,10),
-    PCONF_COLOR("led_col1",{0},"RGB"),
-    PCONF_COLOR("led_col2",{0},"RGB"),
-    PCONF_END,
-  },
-};
-//
-#define RUN_MODE  (globalConfig.getIval(0))
-#define IMU_AXIS  (globalConfig.getIval(1))
-#define IMU_SPAN  (globalConfig.getIval(2))
-#define WIFI_SSID (globalConfig.getText(3))
-#define WIFI_PASS (globalConfig.getText(4))
-#define LED_COL1  (globalConfig.getText(5))
-#define LED_COL2  (globalConfig.getText(6))
-//
-#define WIFI_SSID_DEFAULT "m5atom"
-#define WIFI_PASS_DEFAULT ""
-//
-#define LENGTH(a) sizeof(a)/sizeof(a[0])
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-// ESC table
-////////////////////////////////////////////////////////////////////////////////
-// ESC setup
-ParameterList escConfig = {
-  .conf = {
-    PCONF_SELECT("esc_mode",1,"mode","[0,1,2]","[\"FB\",\"FR\",\"FBR\"]"),
-    PCONF_SELECT("esc_brake",0,"bool","[0,1]","[\"off\",\"on\"]"),
-    PCONF_RANGE("esc_drag",50,"%%",0,100,1),
-    PCONF_SELECT("esc_invert",0,"bmap","[0,1,2,3]","[\"00\",\"01\",\"10\",\"11\"]"),
-    PCONF_SELECT("esc_pwmout",1,"bool","[0,1]","[\"single\",\"double\"]"),
-    PCONF_END,
-  },
-};
-//
-#define ESC_MODE  (escConfig.getIval(0))
-#define ESC_BRAKE (escConfig.getIval(1))
-#define ESC_DRAG  (escConfig.getIval(2))
-#define ESC_INV (escConfig.getIval(3))
-#define ESC_PWM (escConfig.getIval(4))
 
 
 

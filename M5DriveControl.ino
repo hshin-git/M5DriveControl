@@ -8,23 +8,29 @@
 #include "src/SBUS.h"
 #include "MyDriver.hpp"
 
-//
+// use led display
 #define M5DC_LED_ENABLE (true)
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // controller parameters
 ////////////////////////////////////////////////////////////////////////////////
+//
 // define parameter table
+//
 ParameterTable WebConfig::CONFIG = {{
-  // system
+  //
+  // system config in Driver.cpp
+  //
   {.name="ajax",.list=&ajaxConfig},
   {.name="global",.list=&globalConfig},
   {.name="port",.list=&portConfig},
   {.name="ch1",.list=&ch1Config}, 
   {.name="ch2",.list=&ch2Config},
   {.name="esc",.list=&escConfig},
-  // user
+  //
+  // user config in MyDriver.cpp
+  //
   {.name="gvect",.list=&gvectConfig},
   {.name="drift",.list=&driftConfig},
   {.name="stunt",.list=&stuntConfig},
@@ -32,11 +38,18 @@ ParameterTable WebConfig::CONFIG = {{
 }};
 
 
-// define controller table
+//
+// definte of controller table
+// (selected by global->run_mode)
+//
 Driver *DRIVER[] = {
-  // system
+  //
+  // system driver in Driver.cpp
+  //
   &thruDriver,
-  // user
+  //
+  // user driver in MyDrive.cpp
+  //
   &gvectDriver,
   &driftDriver,
   &stuntDriver,
@@ -62,6 +75,7 @@ bool SBUS_LostFrame;
 #define SBUS_TX (-1)
 //#define SBUS_TX (33)
 #define SBUS2PWM(sbus)  (int(0.639534884*(sbus) + 865.755813953))
+//#define SBUS2PWM(sbus)  map((sbus), 172,1811, 1000,2000)
 //
 FilterLP IMU_LPF[3];
 FilterLP OUT_LPF[2];

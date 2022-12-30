@@ -55,6 +55,7 @@ class LibPWM {
   static float MEAN[MAX]; // mean of pwm in-pulse
   
   static void ISR(void *arg) {
+  //static void IRAM_ATTR ISR(void *arg) {
     unsigned long tnow = micros();
     int ch = (int)arg;
     InPulse* pwm = &IN[ch];
@@ -78,6 +79,7 @@ class LibPWM {
   }
 
   static void TSR(void) {
+  //static void IRAM_ATTR TSR(void) {
     unsigned long tnow = micros();
     for (int ch=0; ch<InCH; ch++) {
       InPulse* pwm = &IN[ch];

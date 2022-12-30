@@ -29,7 +29,7 @@ public:
         for (int x=0; x<5; x++) {
           if (y>0) {
             int v = map(chan[y-1], 1000,2000, -1,5);
-            setPixel(x,y, x==v? c: (x<v? CRGB::Gray: CRGB::Black));
+            setPixel(x,y, x==v? c: (x<v? CRGB::YellowGreen: CRGB::Black));
           } else {
             int m = mode - 1;
             setPixel(x,y, x==m? c: CRGB::Black);
