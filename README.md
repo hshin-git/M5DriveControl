@@ -44,7 +44,7 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 
 
 ## 特長
-代表的な特長を列挙します。
+M5DCの代表的な特長を列挙します。
 
 - ドリフトRCカー用ジャイロ（[ヨーレート目標の操舵制御](https://protopedia.net/prototype/2351)）
 - スタントRCカー用片輪走行（[ロールアングル目標の操舵制御](https://protopedia.net/prototype/3144)）
@@ -59,7 +59,7 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 
 
 ## 要件
-標準的なホビーRCカー、M5Atom Matrixとパソコンさえあれば利用可能です。
+標準的なホビーRCカー、M5Atom Matrixとパソコンさえあれば利用できます。
 
 - [ホビーRCカー](https://www.tamiya.com/japan/rc/index.html)（標準的なRCメカ：RC受信機、サーボ、ESC構成）
 - [M5Atom Matrix](https://docs.m5stack.com/en/core/atom_matrix)
