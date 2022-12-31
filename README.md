@@ -5,11 +5,12 @@ Multi-functional drive controller for hobby RC car/boat
 ## Description
 
 - RCカーの多機能ドライブコントローラ"M5DriveControl(M5DC)"です。
-- RCカー搭載のIMUを用いて、人間では不可能な運転制御を実現します。
-- ドライブ制御用のアルゴリズムとパラメータを簡単に追加できます。
+- RCカー搭載のIMUを用いて、人間では不可能な運動制御を実現します。
+- ドライブ制御用のアルゴリズム及びパラメータを簡単に追加できます。
 
 
 ## DEMO
+M5DCの利用例です。
 
 <blockquote class="twitter-tweet"><p lang="ja" dir="ltr">RCカー用ジャイロを改造して「汎用ドライブコントローラー」でけた✌。受信器とIMU信号を入力にサーボ指令を毎秒400回出力する。制御アルゴリズムを追加できるので、ドリフトやスタント用以外にタンクや倒立ロボット用にも拡張できそう。<a href="https://t.co/79r7ZiOycV">https://t.co/79r7ZiOycV</a><a href="https://twitter.com/hashtag/m5stack?src=hash&amp;ref_src=twsrc%5Etfw">#m5stack</a> <a href="https://twitter.com/hashtag/%E3%82%BF%E3%83%9F%E3%83%A4RC?src=hash&amp;ref_src=twsrc%5Etfw">#タミヤRC</a> <a href="https://t.co/FQP6Ttldss">pic.twitter.com/FQP6Ttldss</a></p>&mdash; 辛酸 (@bitter_acids) <a href="https://twitter.com/bitter_acids/status/1580895090956201984?ref_src=twsrc%5Etfw">October 14, 2022</a></blockquote>
 
@@ -156,8 +157,8 @@ M5DCの設定画面から追加したコントローラを呼び出して利用�
 
 
 ## Author
-- [protopedia](https://protopedia.net/prototyper/hshin)
-- [twitter](https://twitter.com/bitter_acids)
+- [Protopedia](https://protopedia.net/prototyper/hshin)
+- [Twitter](https://twitter.com/bitter_acids)
 
 
 
