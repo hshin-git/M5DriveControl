@@ -2,15 +2,15 @@
 Multi-functional drive controller for hobby RC car/boat
 
 
-## Description
+## 概要
 
 - RCカーの多機能ドライブコントローラ"M5DriveControl(M5DC)"です。
 - RCカー搭載のIMUを用いて、人間では不可能な運動制御を実現します。
 - ドライブ制御用のアルゴリズム及びパラメータを簡単に追加できます。
 
 
-## DEMO
-M5DCの利用例です。
+## デモ
+多機能ドライブコントローラM5DCの活用例です。アルゴリズム追加により更なる機能拡張が可能です。
 
 <blockquote class="twitter-tweet"><p lang="ja" dir="ltr">RCカー用ジャイロを改造して「汎用ドライブコントローラー」でけた✌。受信器とIMU信号を入力にサーボ指令を毎秒400回出力する。制御アルゴリズムを追加できるので、ドリフトやスタント用以外にタンクや倒立ロボット用にも拡張できそう。<a href="https://t.co/79r7ZiOycV">https://t.co/79r7ZiOycV</a><a href="https://twitter.com/hashtag/m5stack?src=hash&amp;ref_src=twsrc%5Etfw">#m5stack</a> <a href="https://twitter.com/hashtag/%E3%82%BF%E3%83%9F%E3%83%A4RC?src=hash&amp;ref_src=twsrc%5Etfw">#タミヤRC</a> <a href="https://t.co/FQP6Ttldss">pic.twitter.com/FQP6Ttldss</a></p>&mdash; 辛酸 (@bitter_acids) <a href="https://twitter.com/bitter_acids/status/1580895090956201984?ref_src=twsrc%5Etfw">October 14, 2022</a></blockquote>
 
@@ -40,32 +40,35 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 
 
 
-## Features
+## 特長
+代表的な特長を列挙します。
 
 - ドリフトRCカー用ジャイロ（ヨーレート目標の操舵）
-- スタントRCカー用片輪走行（ロール角目標の操舵）
+- スタントRCカー用片輪走行（ロールアングル目標の操舵）
 - タンク用ジャイロ（ヨーレート目標の左右ESC調整）
 - グリップRCカー用スロットルアシスト（GVC:G-Vectoring Control）
-- 汎用モータドライバ（H-bridge）のESC化
-- RC受信機の[S.BUS](https://ja.wikipedia.org/wiki/S.BUS)/PWM接続
-- コントロール周期は約400Hz
-- スマホからM5DCへWiFi接続してパラメータ調整
-- M5DCのGPIOはパラメータで設定可能
-- 利用者によるパラメータとアルゴリズムの追加
+- 汎用モータドライバ対応（制御モードFR/FB/FBR対応のESC化）
+- [S.BUS](https://ja.wikipedia.org/wiki/S.BUS)/PWM対応（RC受信機との通信方式）
+- 高速制御（制御ループは約400Hz、約2.5msec）
+- スマホ対応（スマホからM5DCへWiFi接続してセッティング）
+- 高い拡張性（利用者によるパラメータ及びアルゴリズム追加）
 
 
 
-## Requrement
+## 要件
+標準的なホビーRCカー、M5Atom Matrixとパソコンさえあれば利用可能です。
 
-- ホビーRCカー（受信機は[S.BUS](https://ja.wikipedia.org/wiki/S.BUS)又はPWM出力）
+- [ホビーRCカー](https://www.tamiya.com/japan/rc/index.html)（標準的なRCメカ：RC受信機、サーボ、ESC構成）
 - [M5Atom Matrix](https://docs.m5stack.com/en/core/atom_matrix)
 - [Arduino IDE](https://www.arduino.cc/en/software)
-- [ESP32 SPIFS](https://github.com/me-no-dev/arduino-esp32fs-plugin)
-- コネクタとワイヤ（コントローラGPIOとRCユニットを接続）
+- [ESP32 SPIFS uploader](https://github.com/me-no-dev/arduino-esp32fs-plugin)
+- ワイヤハーネス類（コントローラM5DCとRCユニットの接続用、汎用ジャンパーケーブル可）
 
 
 
-## Installation
+## インストール
+概ねArduino IDEでM5Stackにプログラム書き込みする標準的な手順通りですが、
+スマホ設定画面で用いるHTMLファイルとJavascriptライブラリをSPIFSに転送する必要があります。
 
 - M5Atom Matrixのデータ領域SPIFSに["data/*"](data/)を書き込む（[ESP32 SPIFS](https://github.com/me-no-dev/arduino-esp32fs-plugin)利用）
 - M5Atom Matrixのプログラム領域に["M5DriveControl.ino"](M5DriveControl.ino)を書き込む（[Arduino IDE](https://www.arduino.cc/en/software)利用）
@@ -73,14 +76,23 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 
 
 
-## Usage
-T.B.D.
+## 使い方（利用者）
+コントローラM5DCは制御モード（制御オン、WiFiなし）と設定モード（制御オフ、WiFIあり）の状態を持ちます。
+電源投入後は制御モードとなり、前面ボタン（A）により両モード間を行き来します。
+
+- コントローラ本体の電源を入れる（USBケーブルまたはRCユニットBECから給電）
+- コントローラ本体の前面ボタンを押して制御モードから設定モードに入る
+- スマホからコントローラ本体へWiFi接続する（モバイル通信オフ、SSIDはm5atom、パスワードなし）
+- スマホのブラウザから設定画面を表示する（IPアドレスは192.168.4.1）
+- スマホのブラウザから必要なパラメータを設定する（入出力ピン定義、制御モード、制御パラメータ等）
+- スマホのブラウザから"exit"ボタン又はコントローラ本体の前面ボタンを押して制御モードへ戻る
+- RCカーを操縦して必要に応じて制御パラメータを調整する
 
 
+## 使い方（開発者）
+ドリフトRCカー用ジャイロの具体例（実装済み）を用いて制御パラメータ／アルゴリズムの追加方法を解説します。
+ファイル["MyDriver.cpp"](MyDriver.cpp)を編集して制御パラメータ"driftConfig"及び制御アルゴリズム"driftDriver"を追記します。
 
-## Advanced Usage
-ドリフトRCカー用ジャイロの追加例です。
-制御パラメータ"driftConfig"、制御アルゴリズム"driftDriver"を作成します。
 ```
 ParameterList driftConfig = {
   .body = {0},
@@ -121,7 +133,8 @@ public:
 ```
 
 
-M5DCに制御パラメータと制御アルゴリズムを登録します。
+ファイル["M5DriveControl.ino"](M5DriveControl.ino)を編集して制御パラメータと制御アルゴリズムを登録します。
+
 ```
 ParameterTable WebConfig::CONFIG = {{
   ...
@@ -142,7 +155,7 @@ ParameterTable WebConfig::CONFIG = {{
 Driver *DRIVER[] = {
   ...
   //
-  // user driver in MyDrive.cpp
+  // user driver in MyDriver.cpp
   //
   &gvectDriver,
   &driftDriver,
@@ -156,12 +169,10 @@ M5DCの設定画面から追加したコントローラを呼び出して利用�
 
 
 
-## Author
+## 作者
 - [Protopedia](https://protopedia.net/prototyper/hshin)
 - [Twitter](https://twitter.com/bitter_acids)
 
 
 
-## License
-
-
+以上
