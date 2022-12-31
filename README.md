@@ -71,11 +71,11 @@ M5DCの代表的な特長を列挙します。
 
 ## インストール
 概ねArduino IDEでM5Stackにプログラム書き込みする標準的な手順通りですが、
-スマホ設定画面で用いるHTMLファイルとJavascriptライブラリをSPIFSに転送する必要があります。
+追加的な手順としてスマホ設定画面に用いるHTMLファイルとJavascriptライブラリをSPIFSに転送する必要があります。
 
 - M5Atom Matrixのデータ領域SPIFSに[data/*](data/)を書き込む（[ESP32 SPIFS](https://github.com/me-no-dev/arduino-esp32fs-plugin)利用）
 - M5Atom Matrixのプログラム領域に[M5DriveControl.ino](M5DriveControl.ino)を書き込む（[Arduino IDE](https://www.arduino.cc/en/software)利用）
-- M5Atom MatrixをRCユニットと接続する（受信機からサーボ又はESCの間）
+- M5Atom MatrixをRCユニットと接続する（受信機からサーボ及びESCへ至る途中）
 
 
 
@@ -88,7 +88,7 @@ M5DCの代表的な特長を列挙します。
 - スマホからコントローラ本体へWiFi接続する（モバイル通信オフ、SSIDはm5atom、パスワードなし）
 - スマホのブラウザから設定画面を表示する（IPアドレスは192.168.4.1）
 - スマホのブラウザから必要なパラメータを設定する（入出力ピン定義、制御モード、制御パラメータ等）
-- スマホのブラウザから"exit"ボタン又はコントローラ本体の前面ボタンを押して制御モードへ戻る
+- スマホのブラウザからexitボタン又はコントローラ本体の前面ボタンを押して制御モードへ戻る
 - RCカーを操縦して必要に応じて制御パラメータを調整する
 
 
