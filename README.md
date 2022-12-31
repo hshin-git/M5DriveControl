@@ -1,19 +1,24 @@
 # M5DriveControl
 Multi-functional drive controller for hobby RC car/boat
 
+
 ## Description
 
-- RCカー用の多機能ドライブコントローラ"M5DriveControl(M5DC)"です。
+- RCカーの多機能ドライブコントローラ"M5DriveControl(M5DC)"です。
+- RCカー搭載のIMUを用いて、人間では不可能な運転制御を実現します。
 - ドライブ制御用のアルゴリズムとパラメータを利用者が追加できます。
 
 
 ## DEMO
 
-https://protopedia.net/prototype/2351
-https://protopedia.net/prototype/3144
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">RCカー用ジャイロを改造して「汎用ドライブコントローラー」でけた✌。受信器とIMU信号を入力にサーボ指令を毎秒400回出力する。制御アルゴリズムを追加できるので、ドリフトやスタント用以外にタンクや倒立ロボット用にも拡張できそう。<a href="https://t.co/79r7ZiOycV">https://t.co/79r7ZiOycV</a><a href="https://twitter.com/hashtag/m5stack?src=hash&amp;ref_src=twsrc%5Etfw">#m5stack</a> <a href="https://twitter.com/hashtag/%E3%82%BF%E3%83%9F%E3%83%A4RC?src=hash&amp;ref_src=twsrc%5Etfw">#タミヤRC</a> <a href="https://t.co/FQP6Ttldss">pic.twitter.com/FQP6Ttldss</a></p>&mdash; 辛酸 (@bitter_acids) <a href="https://twitter.com/bitter_acids/status/1580895090956201984?ref_src=twsrc%5Etfw">October 14, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-https://twitter.com/bitter_acids/status/1589359870247317504?s=20&t=2DZw5PTo6njKDlqDN1gCRQ
-https://twitter.com/bitter_acids/status/1589181781013848064?s=20&t=2DZw5PTo6njKDlqDN1gCRQ
+- [ドリフト](https://protopedia.net/prototype/2351)
+- [スタント](https://protopedia.net/prototype/3144)
+- [グリップ](https://twitter.com/bitter_acids/status/1589181781013848064?s=20&t=2DZw5PTo6njKDlqDN1gCRQ)
+- [タンク/ESC](https://twitter.com/bitter_acids/status/1589359870247317504?s=20&t=2DZw5PTo6njKDlqDN1gCRQ)
+- [グラホ/ESC](https://twitter.com/bitter_acids/status/1606455913690587136?s=20&t=AFkD0NnonmpiJUO2azwYzg)
+
 
 
 ## Features
@@ -30,6 +35,7 @@ https://twitter.com/bitter_acids/status/1589181781013848064?s=20&t=2DZw5PTo6njKD
 - 利用者によるパラメータとアルゴリズムの追加
 
 
+
 ## Requrement
 
 - ホビーRCカー（受信機は[S.BUS](https://ja.wikipedia.org/wiki/S.BUS)又はPWM出力）
@@ -39,7 +45,18 @@ https://twitter.com/bitter_acids/status/1589181781013848064?s=20&t=2DZw5PTo6njKD
 - コネクタとワイヤ（コントローラGPIOとRCユニットを接続）
 
 
+
+## Installation
+
+- M5Atom Matrixのデータ領域SPIFSに"data/*"を書き込む（[ESP32 SPIFS](https://github.com/me-no-dev/arduino-esp32fs-plugin)利用）
+- M5Atom Matrixのプログラム"M5DriveControl"を書き込む（[Arduino IDE](https://www.arduino.cc/en/software)利用）
+- M5Atom MatrixをRCユニットと接続する（受信機からサーボ又はESCの間）
+
+
+
 ## Usage
+T.B.D.
+
 
 
 ## Advanced Usage
@@ -120,16 +137,10 @@ M5DCの設定画面から追加したコントローラを呼び出して利用�
 
 
 
-## Installation
-
-- M5Atom Matrixのデータ領域SPIFSに"data/*"を書き込む（[ESP32 SPIFS](https://github.com/me-no-dev/arduino-esp32fs-plugin)利用）
-- M5Atom Matrixのプログラム"M5DriveControl"を書き込む（[Arduino IED](https://www.arduino.cc/en/software)利用）
-- M5Atom MatrixをRCユニットと接続する（受信機からサーボ又はESCの間）
-
-
 ## Author
-https://protopedia.net/prototyper/hshin
-https://twitter.com/bitter_acids
+[protopedia](https://protopedia.net/prototyper/hshin)
+[twitter](https://twitter.com/bitter_acids)
+
 
 
 ## License
