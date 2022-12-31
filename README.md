@@ -7,7 +7,7 @@ Multi-functional drive controller for hobby RC car/boat
 
 ## 概要
 
-- RCカーの多機能ドライブコントローラ"M5DriveControl(M5DC)"です。
+- RCカーの多機能ドライブコントローラM5DriveControl (M5DC)です。
 - RCカー搭載のIMUを用いて、人間では不可能な運動制御を実現します。
 - ドライブ制御用のアルゴリズム及びパラメータを簡単に追加できます。
 
@@ -46,10 +46,10 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 ## 特長
 代表的な特長を列挙します。
 
-- ドリフトRCカー用ジャイロ（ヨーレート目標の操舵）
-- スタントRCカー用片輪走行（ロールアングル目標の操舵）
-- タンク用ジャイロ（ヨーレート目標の左右ESC調整）
-- グリップRCカー用スロットルアシスト（GVC:G-Vectoring Control）
+- ドリフトRCカー用ジャイロ（ヨーレート目標の操舵制御）
+- スタントRCカー用片輪走行（ロールアングル目標の操舵制御）
+- タンク用ジャイロ（ヨーレート目標の左右ESC制御）
+- グリップRCカー用アシスト（[GVC:G-Vectoring Control](https://www.mazda.co.jp/beadriver/dynamics/skyactivvd/gvc/)）
 - 汎用モータドライバ対応（制御モードFR/FB/FBR対応のESC化）
 - [S.BUS](https://ja.wikipedia.org/wiki/S.BUS)/PWM対応（RC受信機との通信方式）
 - 高速制御（制御ループは約400Hz、約2.5msec）
@@ -73,8 +73,8 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 概ねArduino IDEでM5Stackにプログラム書き込みする標準的な手順通りですが、
 スマホ設定画面で用いるHTMLファイルとJavascriptライブラリをSPIFSに転送する必要があります。
 
-- M5Atom Matrixのデータ領域SPIFSに["data/*"](data/)を書き込む（[ESP32 SPIFS](https://github.com/me-no-dev/arduino-esp32fs-plugin)利用）
-- M5Atom Matrixのプログラム領域に["M5DriveControl.ino"](M5DriveControl.ino)を書き込む（[Arduino IDE](https://www.arduino.cc/en/software)利用）
+- M5Atom Matrixのデータ領域SPIFSに[data/*](data/)を書き込む（[ESP32 SPIFS](https://github.com/me-no-dev/arduino-esp32fs-plugin)利用）
+- M5Atom Matrixのプログラム領域に[M5DriveControl.ino](M5DriveControl.ino)を書き込む（[Arduino IDE](https://www.arduino.cc/en/software)利用）
 - M5Atom MatrixをRCユニットと接続する（受信機からサーボ又はESCの間）
 
 
@@ -98,7 +98,7 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 
 ## 使い方（開発者）
 ドリフトRCカー用ジャイロの具体例（実装済み）を用いて制御パラメータ／アルゴリズムの追加方法を解説します。
-ファイル["MyDriver.hpp"](MyDriver.hpp)を編集して制御パラメータ"driftConfig"及び制御アルゴリズム"driftDriver"を追記します。
+ファイル[MyDriver.hpp](MyDriver.hpp)を編集して制御パラメータdriftConfig及び制御アルゴリズムdriftDriverを追記します。
 
 ```
 ParameterList driftConfig = {
@@ -140,7 +140,7 @@ public:
 ```
 
 
-ファイル["M5DriveControl.ino"](M5DriveControl.ino)を編集して制御パラメータと制御アルゴリズムを登録します。
+ファイル[M5DriveControl.ino](M5DriveControl.ino)を編集して制御パラメータと制御アルゴリズムを登録します。
 
 ```
 ParameterTable WebConfig::CONFIG = {{
