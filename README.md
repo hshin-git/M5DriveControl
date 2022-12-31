@@ -11,13 +11,22 @@ Multi-functional drive controller for hobby RC car/boat
 
 ## DEMO
 
-<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">RCカー用ジャイロを改造して「汎用ドライブコントローラー」でけた✌。受信器とIMU信号を入力にサーボ指令を毎秒400回出力する。制御アルゴリズムを追加できるので、ドリフトやスタント用以外にタンクや倒立ロボット用にも拡張できそう。<a href="https://t.co/79r7ZiOycV">https://t.co/79r7ZiOycV</a><a href="https://twitter.com/hashtag/m5stack?src=hash&amp;ref_src=twsrc%5Etfw">#m5stack</a> <a href="https://twitter.com/hashtag/%E3%82%BF%E3%83%9F%E3%83%A4RC?src=hash&amp;ref_src=twsrc%5Etfw">#タミヤRC</a> <a href="https://t.co/FQP6Ttldss">pic.twitter.com/FQP6Ttldss</a></p>&mdash; 辛酸 (@bitter_acids) <a href="https://twitter.com/bitter_acids/status/1580895090956201984?ref_src=twsrc%5Etfw">October 14, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">RCカー用ジャイロを改造して「汎用ドライブコントローラー」でけた✌。受信器とIMU信号を入力にサーボ指令を毎秒400回出力する。制御アルゴリズムを追加できるので、ドリフトやスタント用以外にタンクや倒立ロボット用にも拡張できそう。<a href="https://t.co/79r7ZiOycV">https://t.co/79r7ZiOycV</a><a href="https://twitter.com/hashtag/m5stack?src=hash&amp;ref_src=twsrc%5Etfw">#m5stack</a> <a href="https://twitter.com/hashtag/%E3%82%BF%E3%83%9F%E3%83%A4RC?src=hash&amp;ref_src=twsrc%5Etfw">#タミヤRC</a> <a href="https://t.co/FQP6Ttldss">pic.twitter.com/FQP6Ttldss</a></p>&mdash; 辛酸 (@bitter_acids) <a href="https://twitter.com/bitter_acids/status/1580895090956201984?ref_src=twsrc%5Etfw">October 14, 2022</a></blockquote>
+
 
 - [ドリフト](https://protopedia.net/prototype/2351)
+
 - [スタント](https://protopedia.net/prototype/3144)
-- [グリップ](https://twitter.com/bitter_acids/status/1589181781013848064?s=20&t=2DZw5PTo6njKDlqDN1gCRQ)
-- [タンク/ESC](https://twitter.com/bitter_acids/status/1589359870247317504?s=20&t=2DZw5PTo6njKDlqDN1gCRQ)
-- [グラホ/ESC](https://twitter.com/bitter_acids/status/1606455913690587136?s=20&t=AFkD0NnonmpiJUO2azwYzg)
+
+- [グリップ](https://twitter.com/bitter_acids/status/1589181781013848064)
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">RCカーでGベクタリングコントロールをトライアル中です。スロットル一定でも曲がる感があり面白い。<a href="https://t.co/Ag2onTEae0">https://t.co/Ag2onTEae0</a> <a href="https://t.co/loPcm9w0r6">pic.twitter.com/loPcm9w0r6</a></p>&mdash; 辛酸 (@bitter_acids) <a href="https://twitter.com/bitter_acids/status/1589181781013848064?ref_src=twsrc%5Etfw">November 6, 2022</a></blockquote>
+
+- [タンク/ESC](https://twitter.com/bitter_acids/status/1589359870247317504)
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">ドリームジャイロM5DriveControlのテストカーです。PIDコントローラーが目標の旋回速度となるよう左右のモーター出力を自動調整して曲がります。夢ジャイロの出力はESC用PWMだけでなくモータードライバ（Hブリッジ）用PWMも選べます。ハードの実装は適当です😁。<a href="https://t.co/lkv8I2Rxls">https://t.co/lkv8I2Rxls</a> <a href="https://t.co/3eQfsdrqkY">https://t.co/3eQfsdrqkY</a> <a href="https://t.co/gQnAwPtI1O">pic.twitter.com/gQnAwPtI1O</a></p>&mdash; 辛酸 (@bitter_acids) <a href="https://twitter.com/bitter_acids/status/1589359870247317504?ref_src=twsrc%5Etfw">November 6, 2022</a></blockquote> 
+
+- [グラホ/ESC](https://twitter.com/bitter_acids/status/1606455913690587136)
+<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">グラスホッパーⅡです。ESCは汎用モータードライバ （DC5~15V 最大50A Hブリッジ）をm5atomで動かすハンドメイドです。普通に走ります✌<a href="https://twitter.com/hashtag/%E3%82%BF%E3%83%9F%E3%83%A4RC?src=hash&amp;ref_src=twsrc%5Etfw">#タミヤRC</a> <a href="https://twitter.com/hashtag/m5stack?src=hash&amp;ref_src=twsrc%5Etfw">#m5stack</a> <a href="https://t.co/94MQZ9tbjo">pic.twitter.com/94MQZ9tbjo</a></p>&mdash; 辛酸 (@bitter_acids) <a href="https://twitter.com/bitter_acids/status/1606455913690587136?ref_src=twsrc%5Etfw">December 24, 2022</a></blockquote>
 
 
 
@@ -138,8 +147,8 @@ M5DCの設定画面から追加したコントローラを呼び出して利用�
 
 
 ## Author
-[protopedia](https://protopedia.net/prototyper/hshin)
-[twitter](https://twitter.com/bitter_acids)
+- [protopedia](https://protopedia.net/prototyper/hshin)
+- [twitter](https://twitter.com/bitter_acids)
 
 
 
