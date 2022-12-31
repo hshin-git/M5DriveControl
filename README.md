@@ -92,9 +92,13 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 - RCカーを操縦して必要に応じて制御パラメータを調整する
 
 
+![M5DC_WiFi_Setting](https://user-images.githubusercontent.com/64751855/210130915-7f154818-4a60-44a4-929c-8a5c9cbe35f5.jpg)
+
+
+
 ## 使い方（開発者）
 ドリフトRCカー用ジャイロの具体例（実装済み）を用いて制御パラメータ／アルゴリズムの追加方法を解説します。
-ファイル["MyDriver.cpp"](MyDriver.cpp)を編集して制御パラメータ"driftConfig"及び制御アルゴリズム"driftDriver"を追記します。
+ファイル["MyDriver.hpp"](MyDriver.hpp)を編集して制御パラメータ"driftConfig"及び制御アルゴリズム"driftDriver"を追記します。
 
 ```
 ParameterList driftConfig = {
@@ -142,7 +146,7 @@ public:
 ParameterTable WebConfig::CONFIG = {{
   ...
   //
-  // user config in MyDriver.cpp
+  // refto user config defined in MyDriver.hpp
   //
   {.name="gvect",.list=&gvectConfig},
   {.name="drift",.list=&driftConfig},
@@ -158,7 +162,7 @@ ParameterTable WebConfig::CONFIG = {{
 Driver *DRIVER[] = {
   ...
   //
-  // user driver in MyDriver.cpp
+  // refto user driver defined in MyDriver.hpp
   //
   &gvectDriver,
   &driftDriver,
