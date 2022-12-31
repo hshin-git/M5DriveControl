@@ -8,7 +8,7 @@ Multi-functional drive controller for hobby RC car/boat
 ## 概要
 
 - RCカーの多機能ドライブコントローラM5DriveControl (M5DC)です。
-- RCカー搭載のIMUを用いて、人間では不可能な運動制御を実現します。
+- RCカー搭載のIMUを用いて人間では不可能な運動制御を実現します。
 - ドライブ制御用のアルゴリズム及びパラメータを簡単に追加できます。
 
 
@@ -46,13 +46,13 @@ Steering assist system for RC car to drive stunt "sidewall skiing".
 ## 特長
 代表的な特長を列挙します。
 
-- ドリフトRCカー用ジャイロ（ヨーレート目標の操舵制御）
-- スタントRCカー用片輪走行（ロールアングル目標の操舵制御）
-- タンク用ジャイロ（ヨーレート目標の左右ESC制御）
+- ドリフトRCカー用ジャイロ（[ヨーレート目標の操舵制御](https://protopedia.net/prototype/2351)）
+- スタントRCカー用片輪走行（[ロールアングル目標の操舵制御](https://protopedia.net/prototype/3144)）
+- タンク用ジャイロ（[ヨーレート目標の左右ESC制御](https://twitter.com/bitter_acids/status/1589359870247317504)）
 - グリップRCカー用アシスト（[GVC:G-Vectoring Control](https://www.mazda.co.jp/beadriver/dynamics/skyactivvd/gvc/)）
-- 汎用モータドライバ対応（制御モードFR/FB/FBR対応のESC化）
+- 汎用モータドライバ対応（[制御モードFR/FB/FBR対応のESC化](https://twitter.com/bitter_acids/status/1606455913690587136)）
 - [S.BUS](https://ja.wikipedia.org/wiki/S.BUS)/PWM対応（RC受信機との通信方式）
-- 高速制御（制御ループは約400Hz、約2.5msec）
+- 高速制御（制御ループは約400Hz≒約2.5msec）
 - スマホ対応（スマホからM5DCへWiFi接続してセッティング）
 - 高い拡張性（利用者によるパラメータ及びアルゴリズム追加）
 
