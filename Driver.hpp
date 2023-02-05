@@ -83,8 +83,8 @@ ParameterList ch2Config = {
   .body = {0},
   .conf = {
     PCONF_FETCH("ch2_min",1000,"usec","ajax",1, 800,1200),
-    PCONF_FETCH("ch2_mid",1500,"usec","ajax",1,1300,1500),
-    PCONF_FETCH("ch2_max",2000,"usec","ajax",1,1800,2000),
+    PCONF_FETCH("ch2_mid",1500,"usec","ajax",1,1300,1700),
+    PCONF_FETCH("ch2_max",2000,"usec","ajax",1,1800,2200),
     PCONF_RANGE("ch2_dead",5,"usec",0,50,1),
     PCONF_RANGE("ch2_freq",50,"Hz",50,400,50),
     PCONF_RANGE("ch2_lpf",1,"span",1,50,1),
@@ -168,7 +168,7 @@ ParameterList globalConfig = {
   .body = {0},
   .conf = {
     PCONF_SELECT("run_mode",0,"mode","[0,1,2,3,4]","[\"direct\",\"gvect\",\"drift\",\"stunt\",\"tank\"]"),
-    PCONF_SELECT("imu_axis",1,"axis","[1,2,3,4,5,6]","[\"X+\",\"X-\",\"Y+\",\"Y-\",\"Z+\",\"Z-\"]"),
+    PCONF_SELECT("imu_axis",1,"axis","[1,-1,2,-2,3,-3]","[\"X+\",\"X-\",\"Y+\",\"Y-\",\"Z+\",\"Z-\"]"),
     PCONF_NUMBER("imu_lpf",1,"span",1,100),
     PCONF_TEXT("wifi_ssid",{0},"text",4,10),
     PCONF_TEXT("wifi_pass",{0},"text",8,10),

@@ -18,24 +18,26 @@
 //
 // define parameter table
 //
-ParameterTable WebConfig::CONFIG = {{
-  //
-  // system config in Driver.cpp
-  //
-  {.name="ajax",.list=&ajaxConfig},
-  {.name="global",.list=&globalConfig},
-  {.name="port",.list=&portConfig},
-  {.name="ch1",.list=&ch1Config}, 
-  {.name="ch2",.list=&ch2Config},
-  {.name="esc",.list=&escConfig},
-  //
-  // user config in MyDriver.cpp
-  //
-  {.name="gvect",.list=&gvectConfig},
-  {.name="drift",.list=&driftConfig},
-  {.name="stunt",.list=&stuntConfig},
-  {.name="tank",.list=&tankConfig},
-}};
+ParameterTable WebConfig::CONFIG = {
+  .table = {
+    //
+    // system config in Driver.cpp
+    //
+    {.name="ajax",.list=&ajaxConfig},
+    {.name="global",.list=&globalConfig},
+    {.name="port",.list=&portConfig},
+    {.name="ch1",.list=&ch1Config}, 
+    {.name="ch2",.list=&ch2Config},
+    {.name="esc",.list=&escConfig},
+    //
+    // user config in MyDriver.cpp
+    //
+    {.name="gvect",.list=&gvectConfig},
+    {.name="drift",.list=&driftConfig},
+    {.name="stunt",.list=&stuntConfig},
+    {.name="tank",.list=&tankConfig},
+  }
+};
 
 
 //
@@ -98,6 +100,10 @@ void setup()
   M5.begin(true,true,M5DC_LED_ENABLE); //Init M5Atom-Matrix(Serial, I2C, LEDs).
   M5.IMU.Init();
 
+  // WiFi
+  pinMode(0,OUTPUT);
+  digitalWrite(0,LOW);
+
   //strcpy(wifi.conf[0].body.text,"m5atom");
   M5DC_CONF.setup();
 
@@ -127,7 +133,7 @@ void setup()
     M5DC_PORT.setupOut(CH2_OUT,CH2_FREQ);
 
   // LED
-  M5DC_FACE.setup(M5DC_LED_ENABLE,500);
+  M5DC_FACE.setup(M5DC_LED_ENABLE,IMU_AXIS);
   
   // DRV
   for (int i=0; i<LENGTH(DRIVER); i++) DRIVER[i]->setup();
@@ -168,7 +174,7 @@ void loop()
   if (abs(Driver::IN[1] - CH2_MID) < CH2_DEAD) Driver::IN[1] = CH2_MID;
 
   // LED
-  M5DC_FACE.loop((SBUS_FailSafe? CRGB::Red: CRGB::Lime),RUN_MODE,Driver::IN);
+  M5DC_FACE.loop(1,RUN_MODE,Driver::IN,Driver::GYRO,Driver::ACCL);
 
   // control and output
   int MODE = RUN_MODE;
@@ -212,7 +218,7 @@ void loop()
       }
 
       // LED
-      M5DC_FACE.loop((SBUS_FailSafe? CRGB::Red: CRGB::Aqua),RUN_MODE,Driver::IN);
+      M5DC_FACE.loop(0,RUN_MODE,Driver::IN,Driver::GYRO,Driver::ACCL);
   
       // DRV and OUT
       int MODE = 0;
@@ -225,6 +231,9 @@ void loop()
     
     // IMU
     M5DC_AHRS.setup(1000,IMU_AXIS);
+
+    // LED
+    M5DC_FACE.setup(M5DC_LED_ENABLE,IMU_AXIS);
     
     // PWM
     M5DC_PORT.putFreq(0,CH1_FREQ);

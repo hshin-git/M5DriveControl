@@ -212,13 +212,14 @@ public:
 //  toHTML(): パラメータのHTML文字列
 ////////////////////////////////////////////////////////////////////////////////
 // Table of Parameters
-//typedef struct {
+typedef struct {
+  char *name;
+  ParameterList *list;
+} ParameterDict;
+
 class ParameterTable {
 public:
-  struct {
-    char *name;
-    ParameterList *list;
-  } table[PTABL_SIZE];
+  ParameterDict table[PTABL_SIZE];
   //
   ParameterList *get(const char *key) {
     for (int i=0; i<PTABL_SIZE && table[i].name; i++) {
@@ -288,7 +289,7 @@ public:
     DEBUG.println(BUFF_OF_JSON);
   }
 };
-//} ParameterTable;
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
